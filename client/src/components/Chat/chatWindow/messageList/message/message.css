@@ -1,0 +1,28 @@
+.message-container{
+    float: left;
+    clear: both;
+    margin: 10px 0px;
+}
+
+.message-text{
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    max-width: 300px;
+}
+
+.message-container.own{
+    float: right;
+    clear: both;
+}
+
+.message-container.own .message-text{
+    background-color: rgb(199, 199, 199);
+}
+
+.message-time{
+    margin: 5px;
+    float: right;
+    font-size: 12px;
+    clear: both;
+}

@@ -1,0 +1,30 @@
+.contact-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0px;
+}
+
+.contact-container:hover{
+    background-color: rgba(237, 241, 241, 0.603);
+    cursor: pointer;
+}
+
+
+.user-profile-photo-container{
+    width: 25%;    
+}
+
+.user-name-container{
+    width: 60%;
+}
+
+.last-message-time-container{
+    width: 15%;
+}
+
+.user-profile-photo{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;   
+}
