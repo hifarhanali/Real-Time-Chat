@@ -2,13 +2,32 @@
     float: left;
     clear: both;
     margin: 10px 0px;
+    position: relative;
 }
 
-.message-text{
+.message-text-wrapper{
     background-color: white;
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 10px;
     max-width: 300px;
+    display: flex;
+}
+
+.message-text-wrapper .message-text{
+    width: 100%;
+    padding: 0 10px;
+}
+
+.message-text-wrapper i{
+    width: 20px;
+    margin-left: 10px;
+    opacity: 0%;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.message-text-wrapper i:hover{
+    opacity: 100%;
 }
 
 .message-container.own{
@@ -16,8 +35,9 @@
     clear: both;
 }
 
-.message-container.own .message-text{
-    background-color: rgb(199, 199, 199);
+.message-container.own .message-text-wrapper{
+    background-color: rgb(35, 99, 124);
+    color: white;
 }
 
 .message-time{
@@ -25,4 +45,30 @@
     float: right;
     font-size: 12px;
     clear: both;
+}
+
+.message-container.own .message-menu-container{
+    width: 160px;
+    position: absolute;
+    padding: 10px 0px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    z-index: 2;
+    display: none;
+}
+
+.message-container.own .message-menu-container{
+    left: auto;
+    top: 20px;
+    right: 30px;
+}
+
+.message-container.own .message-menu-container p{
+    padding: 15px 20px;
+}
+
+.message-container.own .message-menu-container p:hover{
+    cursor: pointer;
+    background-color: lightgray;
 }

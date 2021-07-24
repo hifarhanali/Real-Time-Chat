@@ -28,4 +28,15 @@ const getMessages = async (request, response) => {
     }
 }
 
-export { saveMessage, getMessages };
+// delete a specific message from the database
+const deleteMessage = async (request, response) => {
+    const messageId = request.query.messageId;
+    try {
+        const res = await Message.deleteOne({_id: messageId});
+        response.status(200).json(res);
+    } catch (error) {
+        response.status(500).json(error);
+    }
+}
+
+export { saveMessage, getMessages, deleteMessage };

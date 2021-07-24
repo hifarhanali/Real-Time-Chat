@@ -22,7 +22,7 @@ const Chat = ({loginUser}) => {
     baseURL: "http://localhost:5000"
   })
 
-  const [isProfileSideBarOpen, setIsProfileSideBarOpen] = useState(true);
+  const [isProfileSideBarOpen, setIsProfileSideBarOpen] = useState(true); // to check either profile side bar is opened or closed
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);

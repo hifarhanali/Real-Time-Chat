@@ -71,7 +71,7 @@ const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, con
     return (
         <div className="chat-window-container">
             <ProfileBar conversationUser={conversationUser} setCurrentChat={setCurrentChat} />
-            <MessageList messages={messages} loginUser={loginUser} />
+            <MessageList messages={messages} setMessages={setMessages} loginUser={loginUser} />
             <div className='message-input-container'>
                 <input
                     type='text'

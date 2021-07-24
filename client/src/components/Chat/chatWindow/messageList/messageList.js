@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Message from './message/message';
 
-const MessageList = ({ messages, loginUser }) => {
+const MessageList = ({ messages, setMessages, loginUser }) => {
 
     // to scroll chat window to recent/last messages
     useEffect(() => {
@@ -13,7 +13,7 @@ const MessageList = ({ messages, loginUser }) => {
         <div className='chat-messages-wrapper' style={{ display: 'block', padding: '15px 20px', height: '70vh', overflow: 'hidden', overflowY: 'scroll' }}>
             {
                 messages.map(message =>(
-                    <Message key={message._id} message={message} own={ message.senderId === loginUser?._id } />
+                    <Message key={message._id} messages={messages} setMessages={setMessages} message={message} own={ message.senderId === loginUser?._id } />
                 ))
             }
         </ div>
