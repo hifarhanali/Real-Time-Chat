@@ -1,11 +1,19 @@
 .profileBar-container{
+    width: auto;
     display: flex;
     align-items: center;
-    padding: 10px 15px;
     background-color: rgba(222, 234, 235, 0.603);
+    padding: 10px 15px;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     border-bottom: 1px solid lightgray;
+}
+
+.user-profile-container-wrapper {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    float: left;
 }
 
 .user-profile-photo-container{
@@ -19,4 +27,21 @@
 
 .user-name-container{
     margin-left: 10px;
+}
+
+.close-chat-btn-container{
+    float: right;
+}
+
+.close-chat-btn-container button{
+    font-weight: bold;
+    color:  rgb(1, 126, 134);
+    background-color: rgba(0, 98, 105, 0.103);
+    box-shadow: none;
+    border: 2px solid rgb(1, 122, 131);
+}
+
+.close-chat-btn-container button:hover{
+    background-color: rgb(1, 122, 131);
+    color: white;
 }

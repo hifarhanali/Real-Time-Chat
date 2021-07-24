@@ -8,7 +8,7 @@ import axios from 'axios'
 import './chatWindow.css'
 
 
-const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, conversationUser }) => {
+const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, conversationUser, setCurrentChat }) => {
     const [newMessage, setNewMessage] = useState("");
     const [arrivalMessage, setArrivalMessage] = useState(null);  // new message recieve using socket
 
@@ -70,7 +70,7 @@ const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, con
 
     return (
         <div className="chat-window-container">
-            <ProfileBar conversationUser={conversationUser} />
+            <ProfileBar conversationUser={conversationUser} setCurrentChat={setCurrentChat} />
             <MessageList messages={messages} loginUser={loginUser} />
             <div className='message-input-container'>
                 <input

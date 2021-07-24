@@ -116,7 +116,7 @@ const Chat = ({loginUser}) => {
       <div className="user-chat-window-container" style={{ width: "50%" }}>
         {
           currentChat
-            ? <ChatWindow conversationUser={conversationUser} socket={socket} messages={messages} setMessages={setMessages} loginUser={loginUser} currentChat={currentChat} />
+            ? <ChatWindow conversationUser={conversationUser} socket={socket} messages={messages} setMessages={setMessages} loginUser={loginUser} currentChat={currentChat} setCurrentChat={setCurrentChat} />
             : <div className='no-chat-message-container'> <span>Open a chat to start conversation</span></div>
         }
       </div>
@@ -136,6 +136,7 @@ const Chat = ({loginUser}) => {
             src={path.join(__dirname, conversationUser? conversationUser.photo? conversationUser.photo : AVATAR_IMG_URL : AVATAR_IMG_URL)}
             alt='contact-profile' />
             <h2 className='current-chat-user-name'>{conversationUser?.firstName + " " + conversationUser?.lastName}</h2>
+            <p>{"@" + conversationUser?.username}</p>
           </div>
         </div>
       }
