@@ -22,6 +22,7 @@ const Chat = ({loginUser}) => {
     baseURL: "http://localhost:5000"
   })
 
+  const [isProfileSideBarOpen, setIsProfileSideBarOpen] = useState(true);
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -113,7 +114,7 @@ const Chat = ({loginUser}) => {
         <ContactList setCurrentChat={setCurrentChat} conversationList={conversations} loginUser={loginUser} />
       </div>
 
-      <div className="user-chat-window-container" style={{ width: "50%" }}>
+      <div className="user-chat-window-container profileSideBarCloseStyleChatWindow">
         {
           currentChat
             ? <ChatWindow conversationUser={conversationUser} socket={socket} messages={messages} setMessages={setMessages} loginUser={loginUser} currentChat={currentChat} setCurrentChat={setCurrentChat} />
@@ -123,10 +124,10 @@ const Chat = ({loginUser}) => {
 
       {
         currentChat &&
-        <div className="current-chat-user-detail-container" style={{ width: "25%" }}>
+        <div className={`${!isProfileSideBarOpen? "profileSideBarCloseStyle": ""} current-chat-user-detail-container`} style={{ width: "25%" }}>
           <div className='chat-heading-container'>
-            <div className='back-btn-container'>
-              <i class="fa fa-angle-right"></i>
+            <div className='back-btn-container' onClick={() => setIsProfileSideBarOpen(!isProfileSideBarOpen)}>
+              <i class={`fa fa-angle-${isProfileSideBarOpen? "right": "left"}`}></i>
             </div>
             <h3>User Profile</h3>
           </div>

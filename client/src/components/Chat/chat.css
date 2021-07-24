@@ -118,3 +118,20 @@ body{
     border-radius: 50%;
     margin-bottom: 20px;
 }
+
+.profileSideBarCloseStyleChatWindow{
+    width: 70%;
+}
+
+.profileSideBarCloseStyle{
+    width: 70px !important;
+}
+
+.profileSideBarCloseStyle .chat-heading-container h3,
+.profileSideBarCloseStyle .current-chat-user-detail{
+    display: none;
+}
+
+.profileSideBarCloseStyle .chat-heading-container{
+    border-bottom: none;
+}
