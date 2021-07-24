@@ -8,7 +8,7 @@ import {
 
 
 import Chat from './components/Chat/chat';
-import Login from './components/Login/login';
+import Signup from './components/Signup/signup';
 
 const App = () => {
 
@@ -18,11 +18,10 @@ const App = () => {
         <Router>
             <Switch>
                 <Route exact path="/">
-
                     {
                         loginUser
                             ? <Chat loginUser={loginUser} />
-                            : <Login setLoginUser={setLoginUser} />
+                            : <Signup setLoginUser={setLoginUser} />
                     }
                 </Route>
                 <Route path="/chat">

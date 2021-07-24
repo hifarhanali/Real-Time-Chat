@@ -4,6 +4,9 @@ import path from 'path'
 
 import './contact.css'
 
+// avatar image url
+const AVATAR_IMG_URL = "images/user_images/avatar.jpg";
+
 
 const Contact = ({conversation, loginUser}) => {
     const axios = axiosAPI.create({
@@ -15,9 +18,9 @@ const Contact = ({conversation, loginUser}) => {
     const [conversationUser, setConversationUser] = useState(null);
     useEffect(() => {
         const getConversationUserDetail = async () => {
-            const contactId = conversation.members.find(m => m !== loginUser._id);
+            const contactId = conversation.members?.find(m => m !== loginUser._id);
             try {
-                const res = await axios.get('/user/' + contactId);
+                const res = await axios.get('/user?userId=' + contactId);
                 setConversationUser(res.data);
             }
             catch (error) {
@@ -31,15 +34,15 @@ const Contact = ({conversation, loginUser}) => {
     return (        
         <div className='contact-container'>
             <div className='user-profile-photo-container'>
-                <img className='user-profile-photo' src={path.join(__dirname, conversationUser? conversationUser.photo : "" )} alt='contact-profile'/>
+                <img className='user-profile-photo' src={path.join(__dirname, conversationUser? conversationUser.photo? conversationUser.photo : AVATAR_IMG_URL : AVATAR_IMG_URL)} alt='contact-profile'/>
             </div>
             <div className='user-name-container'>
                 <h3>{conversationUser?.firstName + " " + conversationUser?.lastName}</h3>
-                <span className="last-message-text">Hello, I am doing good....</span>
+                {/* <span className="last-message-text">Hello, I am doing good....</span> */}
             </div>
-            <div className='last-message-time-container'>
+            {/* <div className='last-message-time-container'>
                 <span className='last-message-time'>05:46</span>
-            </div>
+            </div> */}
         </div>
     );
 }

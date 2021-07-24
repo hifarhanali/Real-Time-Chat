@@ -28,6 +28,24 @@ const Chat = ({loginUser}) => {
   const socket = useRef();
   const SOCKET_PORT = 8990;
 
+  // to get detail of conversation user
+  const [conversationUser, setConversationUser] = useState(null);
+  useEffect(() => {
+    const getConversationUserDetail = async () => {
+      const contactId = currentChat?.members?.find(m => m !== loginUser._id);
+      try {
+        const res = contactId && await axios.get('/user?userId=' + contactId);
+        res && setConversationUser(res.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+    getConversationUserDetail();
+  }, [currentChat, loginUser]);
+
+
+
   useEffect(() => {
     socket.current = io(`ws://localhost:${SOCKET_PORT}`);
   }, [])
@@ -77,6 +95,8 @@ const Chat = ({loginUser}) => {
     getUsersMessages();
   }, [currentChat]);
 
+
+
   return (
     <div className="chat-container" style={{ display: "flex", height: "100vh" }}>
       <div className="user-contacts-container" style={{ width: "25%" }}>
@@ -93,28 +113,34 @@ const Chat = ({loginUser}) => {
         <ContactList setCurrentChat={setCurrentChat} conversationList={conversations} loginUser={loginUser} />
       </div>
 
-      <div className="user-chat-window-container" style={{ width: "75%" }}>
+      <div className="user-chat-window-container" style={{ width: "50%" }}>
         {
           currentChat
-            ? <ChatWindow socket={socket} messages={messages} setMessages={setMessages} loginUser={loginUser} currentChat={currentChat} />
+            ? <ChatWindow conversationUser={conversationUser} socket={socket} messages={messages} setMessages={setMessages} loginUser={loginUser} currentChat={currentChat} />
             : <div className='no-chat-message-container'> <span>Open a chat to start conversation</span></div>
         }
       </div>
 
-      <div className="current-chat-user-detail-container" style={{ width: "25%", display: "none" }}>
-        <div className='chat-heading-container'>
-          <div className='back-btn-container'>
-            <i class="fa fa-angle-right"></i>
+      {
+        currentChat &&
+        <div className="current-chat-user-detail-container" style={{ width: "25%" }}>
+          <div className='chat-heading-container'>
+            <div className='back-btn-container'>
+              <i class="fa fa-angle-right"></i>
+            </div>
+            <h3>User Profile</h3>
           </div>
-          <h3>User Profile</h3>
+          <div className='current-chat-user-detail'>
+            <img
+            className='current-chat-user-profile-photo'
+            src={path.join(__dirname, conversationUser? conversationUser.photo? conversationUser.photo : AVATAR_IMG_URL : AVATAR_IMG_URL)}
+            alt='contact-profile' />
+            <h2 className='current-chat-user-name'>{conversationUser?.firstName + " " + conversationUser?.lastName}</h2>
+          </div>
         </div>
-        <div className='current-chat-user-detail'>
-          <img className='current-chat-user-profile-photo' src={path.join(__dirname, AVATAR_IMG_URL)} alt='contact-profile' />
-          <h2 className='current-chat-user-name'>Saqib Ali</h2>
-        </div>
-      </div>
-    </div>
+      }
 
+    </div>
   );
 }
 

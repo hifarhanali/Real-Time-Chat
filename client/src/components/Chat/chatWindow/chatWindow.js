@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import MessageList from './messageList/messageList';
 import ProfileBar from './profileBar/profileBar';
 import axios from 'axios'
@@ -8,7 +8,7 @@ import axios from 'axios'
 import './chatWindow.css'
 
 
-const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser}) => {
+const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, conversationUser }) => {
     const [newMessage, setNewMessage] = useState("");
     const [arrivalMessage, setArrivalMessage] = useState(null);  // new message recieve using socket
 
@@ -16,34 +16,36 @@ const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser}) =>
     const handleMessageSubmit = async (e) => {
         e.preventDefault();
 
-        const message = {
-            conversationId: currentChat._id,
-            senderId: loginUser._id,
-            text: newMessage,
-        };
+        if (newMessage.trim()) {
+            const message = {
+                conversationId: currentChat._id,
+                senderId: loginUser._id,
+                text: newMessage,
+            };
 
-        // send message to reciever using sockets
-        socket.current.emit("sendMessage", {
-            senderId: loginUser?._id,
-            recieverId: currentChat?.members.find(member => member !== loginUser?._id),
-            text: newMessage,
-        })
+            // send message to reciever using sockets
+            socket.current.emit("sendMessage", {
+                senderId: loginUser?._id,
+                recieverId: currentChat?.members.find(member => member !== loginUser?._id),
+                text: newMessage,
+            })
 
-        try {
-            const res = await axios.post('/message', message);
-            setMessages([...messages, res.data]);
-            setNewMessage("");            
-        }
-        catch (error) {
-            console.log(error);
+            try {
+                const res = await axios.post('/message', message);
+                setMessages([...messages, res.data]);
+                setNewMessage("");
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
     }
 
     // if there is any change in arrival message i.e we have reieved a new message,
     // update messages list
-    useEffect(() =>{
+    useEffect(() => {
         arrivalMessage && currentChat?.members.includes(arrivalMessage.senderId) &&
-        setMessages(prevMessages => [...prevMessages, arrivalMessage])
+            setMessages(prevMessages => [...prevMessages, arrivalMessage])
     }, [arrivalMessage, currentChat]);
 
 
@@ -55,13 +57,20 @@ const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser}) =>
                 text: msg.text,
                 createdAt: new Date(),
             });
-        });        
-      }, [])
-    
+        });
+    }, []);
+
+    // send message if enter key is pressed
+    const handleKeyPress = (e) => {
+        if (e.which == 13) {
+            e.preventDefault();
+            document.getElementById("message-submit-btn")?.click();
+        }
+    }
 
     return (
         <div className="chat-window-container">
-            <ProfileBar />
+            <ProfileBar conversationUser={conversationUser} />
             <MessageList messages={messages} loginUser={loginUser} />
             <div className='message-input-container'>
                 <input
@@ -69,6 +78,7 @@ const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser}) =>
                     id='message-input'
                     placeholder='Type here . . .'
                     onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={(e) => handleKeyPress(e)}
                     value={newMessage}
                 />
                 <button type='submit' id='message-submit-btn' onClick={handleMessageSubmit}>

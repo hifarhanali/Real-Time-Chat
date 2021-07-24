@@ -6,8 +6,8 @@ const Login = ({setLoginUser}) => {
     const getLoginUserDetail = async () => {
         const DUMMY_LOGIN_USERID = document.getElementById('userId').value;
         try {
-            const res = await axios.get('/user/' + DUMMY_LOGIN_USERID);
-            setLoginUser(res.data);
+            const res = await axios.get('/user?userId=' + DUMMY_LOGIN_USERID);
+            setLoginUser(res.data.user);
         }
         catch (error) {
             console.log(error);

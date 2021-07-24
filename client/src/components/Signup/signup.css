@@ -1,0 +1,55 @@
+.signup-container-wrapper{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.signup-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 113, 119, 0.973);
+    padding: 20px 30px;
+    border-radius: 10px;
+    min-width: 250px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.signup-container p{
+    color: white;
+}
+
+.input-container{
+    margin: 15px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.input-container p {
+    width: 40%;
+}
+
+.input-container input{
+    width: 60%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 113, 119, 0.973);
+}
+
+.input-container input:focus{
+    border: 1px solid rgb(97, 227, 250);
+}
+
+.error-msg-span-container{
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(255, 2, 2, 0.3);
+    display: none;
+    border-radius: 5px;
+}
+
+.error-msg-span{
+    color: red;
+}
