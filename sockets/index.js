@@ -1,4 +1,4 @@
-const SOCKET_PORT = 8990;
+const SOCKET_PORT = 9999;
 
 const io = require('socket.io')(SOCKET_PORT, {
     cors: {
@@ -41,6 +41,12 @@ io.on("connection", (socket) => {
         io.emit("getAllOnlineUsers", onlineUsers);
     })
 
+    // send online users on request
+    socket.on("getAllOnlineUsersSignal", signal => {
+        if(signal){
+            io.emit("getAllOnlineUsers", onlineUsers);
+        }
+    });
 
     // send and recieve message
     socket.on("sendMessage", ({senderId, recieverId, text}) => {
@@ -53,7 +59,7 @@ io.on("connection", (socket) => {
 
     // when a user disconnects
     socket.on("disconnect", () => {
-        console.log("A user disconnect . . .");
+        console.log("A User Disconnected . . .");
         removeUserFromOnlineUsers(socket.id);
         io.emit("getAllOnlineUsers", onlineUsers);
     })
