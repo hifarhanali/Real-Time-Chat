@@ -28,4 +28,24 @@ const getConversationOfUser = async (request, response) => {
     }
 }
 
-export { saveConversation, getConversationOfUser };
+
+
+// update last message time of a conversation
+const updateConversationLastMessageTime = async (request, response) => {
+    const conversationId = request.query?.conversationId;
+    try {
+        const db_response = await Conversation.updateOne({ _id: conversationId }, {
+            $set: {
+                lastMessageAt: new Date()
+            },
+            $currentDate: { lastUpdated: true }
+        });
+        const updatedConversation = await Conversation.findOne({_id: conversationId});
+        response.status(200).json(updatedConversation);
+    } catch (error) {
+        response.status(500).json(error);
+    }
+}
+
+
+export { saveConversation, getConversationOfUser, updateConversationLastMessageTime };

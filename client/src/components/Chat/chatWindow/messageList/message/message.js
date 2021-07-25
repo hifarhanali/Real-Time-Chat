@@ -20,8 +20,8 @@ const Message = ({ message, own, messages, setMessages }) => {
 
     // to handle click event anywhere on screen
     // hide message menu, if open
-    document.addEventListener('DOMContentLoaded', function () {
-        document.body.addEventListener('click', function () {
+    function addScreenClickEvent() {
+        document.body.addEventListener('click', function () {;
             var message_menu_list = document.getElementsByClassName("message-menu-container");
             for (var i = 0; i < message_menu_list.length; ++i) {
                 if (message_menu_list[i].style.display !== "none") {
@@ -29,7 +29,8 @@ const Message = ({ message, own, messages, setMessages }) => {
                 }
             }
         }, true);
-    });
+    }
+    addScreenClickEvent();
 
     // to delete message
     const handleDeleteMessageClick = async (e) => {

@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import MessageList from './messageList/messageList';
 import ProfileBar from './profileBar/profileBar';
-import axios from 'axios'
+import axiosAPI from 'axios'
 
 
 // import style sheets
 import './chatWindow.css'
 
 
-const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, conversationUser, setCurrentChat }) => {
+const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, conversationUser, setCurrentChat, conversations, setConversations }) => {
+
+    const axios = axiosAPI.create({
+        baseURL: "http://localhost:5000"
+    })
+
     const [newMessage, setNewMessage] = useState("");
     const [arrivalMessage, setArrivalMessage] = useState(null);  // new message recieve using socket
 
@@ -31,9 +36,35 @@ const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, con
             })
 
             try {
+                // save message in the database
                 const res = await axios.post('/message', message);
-                setMessages([...messages, res.data]);
-                setNewMessage("");
+
+                if (res.status === 200) {
+                    const conversationId = currentChat?._id;
+
+                    // update conversation last message time
+                    const conversationUpdateResponse = await axios.put("/conversation?conversationId=" + conversationId);
+                    if (conversationUpdateResponse.status === 200) 
+                    {
+                        let tempConversations = (
+                            conversations.map(conversation => 
+                                conversation._id === conversationId 
+                                ? {...conversation, lastMessageAt : conversationUpdateResponse.data?.lastMessageAt} 
+                                : conversation
+                        ));
+
+                        // set conversations in sorted order
+                        setConversations(tempConversations.sort((a, b) => {
+                            if (!a.lastMessageAt) return -1;
+                            if (!b.lastMessageAt) return 1;
+                            if (a.lastMessageAt == b.lastMessageAt) return 0
+                            return a.lastMessageAt > b.lastMessageAt ? -1 : 1;
+                        }));
+
+                        setMessages([...messages, res.data]);
+                        setNewMessage("");
+                    }
+                }
             }
             catch (error) {
                 console.log(error);

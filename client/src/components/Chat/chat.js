@@ -27,7 +27,7 @@ const Chat = ({loginUser}) => {
   const [messages, setMessages] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const socket = useRef();
-  const SOCKET_PORT = 8990;
+  const SOCKET_PORT = 9999;
 
   // to get detail of conversation user
   const [conversationUser, setConversationUser] = useState(null);
@@ -71,7 +71,15 @@ const Chat = ({loginUser}) => {
     const getUserConversations = async () => {
       try {
         const res = await axios.get('/conversation/' + loginUser._id);
-        setConversations(res.data);
+
+        // set conversations in sorted order
+        setConversations(res.data.sort((a, b) => {
+          if(!a.lastMessageAt) return -1;
+          if(!b.lastMessageAt) return 1;
+          if(a.lastMessageAt == b.lastMessageAt) return 0
+          return a.lastMessageAt > b.lastMessageAt ? -1 : 1;
+      }));
+
       }
       catch (error) {
         console.log(error);
@@ -117,7 +125,11 @@ const Chat = ({loginUser}) => {
       <div className="user-chat-window-container profileSideBarCloseStyleChatWindow">
         {
           currentChat
-            ? <ChatWindow conversationUser={conversationUser} socket={socket} messages={messages} setMessages={setMessages} loginUser={loginUser} currentChat={currentChat} setCurrentChat={setCurrentChat} />
+            ? <ChatWindow
+            conversationUser={conversationUser} socket={socket}
+            messages={messages} setMessages={setMessages}
+            loginUser={loginUser} currentChat={currentChat} setCurrentChat={setCurrentChat}
+            conversations={conversations} setConversations={setConversations} />
             : <div className='no-chat-message-container'> <span>Open a chat to start conversation</span></div>
         }
       </div>
