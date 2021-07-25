@@ -29,6 +29,30 @@
     margin-left: 10px;
 }
 
+.user-status-container{
+    display: flex;
+    align-items: center;
+}
+
+.user-status-container .user-status{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.user-status-container .user-status.online{
+    background-color: green;
+}
+
+.user-status-container .user-status.offline{
+    background-color: gray;
+}
+
+.user-status-container .user-status-text{
+    margin-right: 10px;
+    font-style: italic;
+}
+
 .close-chat-btn-container{
     float: right;
     width: 20%;

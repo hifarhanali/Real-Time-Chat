@@ -35,7 +35,7 @@ body{
     border-bottom: 1px solid lightgray;
 }
 
-.chat-heading-container .back-btn-container{
+.arrow-btn-container{
     height: 40px;
     width: 40px;
     border-radius: 10px;
@@ -44,10 +44,16 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
-.chat-heading-container .back-btn-container i{
+.arrow-btn-container i{
     font-size: 16px;
+}
+
+.arrow-btn-container:hover{
+    background-color: rgb(1, 122, 131);
+    color: white;
 }
 
 .chat-heading-container h3{

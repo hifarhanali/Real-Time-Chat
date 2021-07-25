@@ -22,6 +22,7 @@ const Chat = ({loginUser}) => {
     baseURL: "http://localhost:5000"
   })
 
+  const [isCurrentUserOnline, setIsCurrentUserOnline] = useState(false);
   const [isProfileSideBarOpen, setIsProfileSideBarOpen] = useState(true); // to check either profile side bar is opened or closed
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -54,15 +55,31 @@ const Chat = ({loginUser}) => {
 
   // recieve message from socket server side
   useEffect(() => {
-
     // add the login user
     socket.current.emit("addUser", loginUser?._id);
-
-    // get all online users from server side
-    socket.current.on("getAllOnlineUsers", onlineUsers => {
-      console.log(onlineUsers);      
+    
+    socket?.current?.on("getAllOnlineUsers", onlineUsers => {
+      const currentContactId = currentChat?.members.find(m => m !== loginUser?._id);
+      if (onlineUsers.some(user => user.userId === currentContactId)) {
+        setIsCurrentUserOnline(true);
+      }
     })
   }, [loginUser]);
+
+  // recieve message from socket server side
+  useEffect(() => {
+    socket?.current?.emit("getAllOnlineUsersSignal", true);
+    // get all online users from server side
+    socket?.current?.on("getAllOnlineUsers", onlineUsers => {
+      const currentContactId = currentChat?.members.find(m => m !== loginUser?._id);
+      if (onlineUsers.some(user => user.userId === currentContactId)) {        
+        setIsCurrentUserOnline(true);
+      }
+      else{
+        setIsCurrentUserOnline(false);
+      }
+    })
+  }, [currentChat]);
 
 
 
@@ -110,7 +127,7 @@ const Chat = ({loginUser}) => {
     <div className="chat-container" style={{ display: "flex", height: "100vh" }}>
       <div className="user-contacts-container" style={{ width: "25%" }}>
         <div className='chat-heading-container'>
-          <div className='back-btn-container'>
+          <div className='arrow-btn-container'>
             <i class="fa fa-angle-left"></i>
           </div>
           <h3>Chat</h3>
@@ -119,17 +136,23 @@ const Chat = ({loginUser}) => {
           <input className='search-contact' type='text' placeholder='Search contact . . .' />
           <i className='fa fa-search'></i>
         </div>
-        <ContactList setCurrentChat={setCurrentChat} conversationList={conversations} loginUser={loginUser} />
+        <ContactList
+          socket={socket} currentChat={currentChat}
+          setCurrentChat={setCurrentChat} conversationList={conversations}
+          loginUser={loginUser} isCurrentUserOnline={isCurrentUserOnline} setIsCurrentUserOnline={setIsCurrentUserOnline}
+        />
       </div>
 
       <div className="user-chat-window-container profileSideBarCloseStyleChatWindow">
         {
           currentChat
             ? <ChatWindow
-            conversationUser={conversationUser} socket={socket}
-            messages={messages} setMessages={setMessages}
-            loginUser={loginUser} currentChat={currentChat} setCurrentChat={setCurrentChat}
-            conversations={conversations} setConversations={setConversations} />
+              conversationUser={conversationUser} socket={socket}
+              messages={messages} setMessages={setMessages}
+              loginUser={loginUser} currentChat={currentChat} setCurrentChat={setCurrentChat}
+              conversations={conversations} setConversations={setConversations}
+              isCurrentUserOnline={isCurrentUserOnline} setIsCurrentUserOnline={setIsCurrentUserOnline}
+            />
             : <div className='no-chat-message-container'> <span>Open a chat to start conversation</span></div>
         }
       </div>
@@ -138,7 +161,7 @@ const Chat = ({loginUser}) => {
         currentChat &&
         <div className={`${!isProfileSideBarOpen? "profileSideBarCloseStyle": ""} current-chat-user-detail-container`} style={{ width: "25%" }}>
           <div className='chat-heading-container'>
-            <div className='back-btn-container' onClick={() => setIsProfileSideBarOpen(!isProfileSideBarOpen)}>
+            <div className='arrow-btn-container' onClick={() => setIsProfileSideBarOpen(!isProfileSideBarOpen)}>
               <i class={`fa fa-angle-${isProfileSideBarOpen? "right": "left"}`}></i>
             </div>
             <h3>User Profile</h3>

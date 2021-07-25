@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Contact from './contact/contact';
 
 // import css
@@ -13,7 +15,9 @@ const ContactList = (props) => {
             {
                 props.conversationList &&
                 props.conversationList.map(conversation => (
-                    <div key={conversation._id} onClick={() => {props.setCurrentChat(conversation)}}>
+                    <div key={conversation._id}
+                        onClick={() => props.setCurrentChat(conversation)}
+                    >
                         <Contact conversation={conversation} loginUser={props.loginUser} />
                     </div>
                 ))

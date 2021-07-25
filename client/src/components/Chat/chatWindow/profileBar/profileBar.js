@@ -1,5 +1,5 @@
+import { useEffect, useState } from 'react';
 import path from 'path'
-import axios from 'axios'
 
 // css
 import './profileBar.css'
@@ -7,7 +7,7 @@ import './profileBar.css'
 // avatar image url
 const AVATAR_IMG_URL = "images/user_images/avatar.jpg";
 
-const ProfileBar = ({conversationUser, setCurrentChat}) => {
+const ProfileBar = ({conversationUser, setCurrentChat, isCurrentUserOnline, setIsCurrentUserOnline}) => {
 
     const handleCloseButtonClick = (e) =>{
         e.preventDefault();
@@ -25,6 +25,10 @@ const ProfileBar = ({conversationUser, setCurrentChat}) => {
                 </div>
                 <div className='user-name-container'>
                     <h3>{conversationUser?.firstName + " " + conversationUser?.lastName}</h3>
+                    <div className='user-status-container'>
+                        <p className='user-status-text'>{isCurrentUserOnline? "Online" : "Offline"}</p>
+                        <span className={`user-status ${isCurrentUserOnline? "online" : "offline"}`}></span>
+                    </div>
                 </div>
             </div>
 

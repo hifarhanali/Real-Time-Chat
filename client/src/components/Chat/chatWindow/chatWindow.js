@@ -8,7 +8,7 @@ import axiosAPI from 'axios'
 import './chatWindow.css'
 
 
-const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, conversationUser, setCurrentChat, conversations, setConversations }) => {
+const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, conversationUser, setCurrentChat, conversations, setConversations, isCurrentUserOnline, setIsCurrentUserOnline }) => {
 
     const axios = axiosAPI.create({
         baseURL: "http://localhost:5000"
@@ -101,7 +101,12 @@ const ChatWindow = ({ socket, currentChat, messages, setMessages, loginUser, con
 
     return (
         <div className="chat-window-container">
-            <ProfileBar conversationUser={conversationUser} setCurrentChat={setCurrentChat} />
+            <ProfileBar 
+                conversationUser={conversationUser}
+                setCurrentChat={setCurrentChat}
+                isCurrentUserOnline={isCurrentUserOnline}
+                setIsCurrentUserOnline={setIsCurrentUserOnline}
+            />
             <MessageList messages={messages} setMessages={setMessages} loginUser={loginUser} />
             <div className='message-input-container'>
                 <input
